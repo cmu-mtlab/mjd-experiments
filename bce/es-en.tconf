@@ -1,0 +1,43 @@
+global {
+
+  ducttape_output=/home/mdenkows/oasis/bce/es-en
+  
+  train_data_src="/home/mdenkows/oasis/bce/data/eu+nc.es-en.es"
+  train_data_tgt="/home/mdenkows/oasis/bce/data/eu+nc.es-en.en"
+
+  mono_data_src="/home/mdenkows/oasis/bce/data/eu+nc+news.es"
+  mono_data_tgt="/home/mdenkows/oasis/bce/data/eu+nc+news.en"
+  
+  dev_data_src=/home/mdenkows/oasis/bce/data/newstest2012.es
+  dev_data_tgt=/home/mdenkows/oasis/bce/data/newstest2012.en
+
+  test_data_src="/home/mdenkows/oasis/bce/data/newstest2013-src.es"
+  test_data_tgt="/home/mdenkows/oasis/bce/data/newstest2013-src.en"
+
+  src_lang="es"
+  tgt_lang="en"
+
+  lm_order=4
+
+  num_clusters=(NumClusters: 50 100 200)
+
+  sparse_surface_context=(SparseSurfaceContext: 0 1)
+  sparse_cluster_context=(SparseClusterContext: 0 1)
+}
+
+plan main {
+  # Baseline
+  reach eval via (Trial: 1)
+  # BC Phrase table
+  reach eval via (Trial: 1) * (ClusterFeatures: yes) * (NumClusters: 50)
+  # Surface features
+  #reach eval via (Trial: 1) * (SparseSurface: yes)
+  # Cluster features
+  #reach eval via (Trial: 1) * (SparseCluster: yes) * (ClusterData: bitext) * (NumClusters: 50)
+  # Both
+  #reach eval via (Trial: 1) * (SparseSurface: yes) * (SparseCluster: yes) * (SparseClusterContext: 0) * (ClusterData: bitext) * (NumClusters: 50 100 200)
+  #reach eval via (Trial: 1) * (SparseSurface: yes) * (SparseCluster: yes) * (SparseClusterContext: 0) * (ClusterData: mono) * (NumClusters: 50 100 200)
+  # Context
+  #reach eval via (Trial: 1) * (SparseSurface: yes) * (SparseSurfaceContext: 1)
+  #reach eval via (Trial: 1) * (SparseSurface: yes) * (SparseCluster: yes) * (SparseClusterContext: 1) * (ClusterData: mono) * (NumClusters: 50 100 200)
+}
